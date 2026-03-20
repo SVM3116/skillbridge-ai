@@ -1,13 +1,14 @@
 {
-  "Kubernetes": ["Docker Basics"],
-  "Kubernetes Advanced": ["Kubernetes Basics"],
-  "Docker Advanced": ["Docker Basics"],
-  "React Basics": ["JavaScript ES6 Fundamentals"],
-  "React Advanced Patterns": ["React Basics"],
-  "Python Intermediate Patterns": ["Python for Beginners"],
-  "Python Advanced Mastery": ["Python Intermediate Patterns"],
-  "Machine Learning Fundamentals": ["Python Intermediate Patterns"],
-  "SQL Advanced Queries": ["SQL Basics"],
-  "System Design Advanced": ["System Design Fundamentals"],
-  "AWS Solutions Architect": ["AWS Cloud Fundamentals"]
+  "Kubernetes": ["Docker"],
+  "Kubernetes Advanced": ["Kubernetes"],
+  "Docker Advanced": ["Docker"],
+  "React": ["JavaScript"],
+  "React Advanced Patterns": ["React"],
+  "Python Intermediate Patterns": ["Python"],
+  "Python Advanced Mastery": ["Python"],
+  "Machine Learning": ["Python"],
+  "SQL Advanced Queries": ["SQL"],
+  "System Design Advanced": ["System Design"],
+  "CI/CD": ["Git"],
+  "AWS": ["AWS"]
 }

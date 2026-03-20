@@ -8,6 +8,7 @@ import os
 import tempfile
 from dotenv import load_dotenv
 from test_engine import filter_testable_skills, generate_questions_for_skill, score_test
+from gap_engine import generate_full_roadmap
 
 load_dotenv()
 
@@ -147,3 +148,21 @@ async def score_test_endpoint(data: dict):
     answers = data.get("answers", [])
     scores  = score_test(answers)
     return {"scores": scores}
+
+@app.post("/api/generate-roadmap")
+async def generate_roadmap(data: dict):
+    """
+    Master endpoint — runs full pipeline.
+    Input:  { resume_skills, test_scores, jd_skills }
+    Output: { roadmap, gaps, reasoning_trace, metrics }
+    """
+    resume_skills = data.get("resume_skills", [])
+    test_scores   = data.get("test_scores",   [])
+    jd_skills     = data.get("jd_skills",     [])
+
+    result = generate_full_roadmap(
+        resume_skills,
+        test_scores,
+        jd_skills
+    )
+    return result
