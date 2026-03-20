@@ -1,16 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 const STEPS = ['Upload', 'Skills', 'Test', 'Roadmap'];
 
 function Results({ goTo, appData }) {
   const [activeNode, setActiveNode]       = useState(null);
   const [showTrace, setShowTrace]         = useState(false);
+  const exportRef = useRef(null);
   const testScores  = appData.testScores  || [];
   const roadmapData = appData.roadmapData || {};
   const roadmap     = roadmapData.roadmap        || [];
   const trace       = roadmapData.reasoning_trace || [];
   const metrics     = roadmapData.metrics        || {};
 
+  const handleExport = () => {
+    const element = exportRef.current;
+    const opt = {
+      margin:      [10, 10, 10, 10],
+      filename:    'SkillBridge_MyRoadmap.pdf',
+      image:       { type: 'jpeg', quality: 0.95 },
+      html2canvas: { scale: 2, useCORS: true },
+      jsPDF:       { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+    import('html2pdf.js').then(html2pdf => {
+      html2pdf.default().set(opt).from(element).save();
+    });
+  };
   const getLevelColor = (level) => {
     if (level === 'Advanced')     return { bg:'#dcfce7', border:'#86efac', text:'#15803d' };
     if (level === 'Intermediate') return { bg:'#fef9c3', border:'#fde047', text:'#854d0e' };
@@ -59,7 +73,7 @@ function Results({ goTo, appData }) {
         </div>
       </div>
 
-      <div style={{ maxWidth: '800px', margin: '0 auto', padding: '48px 24px' }}>
+      <div ref={exportRef} style={{ maxWidth: '800px', margin: '0 auto', padding: '48px 24px' }}>
 
         {/* Header */}
         <div style={{ marginBottom: '40px' }}>
@@ -350,14 +364,37 @@ function Results({ goTo, appData }) {
           )}
         </div>
 
-        {/* Start Over Button */}
-        <button
-          className="btn-primary"
-          onClick={() => goTo('landing')}
-          style={{ width: '100%', padding: '16px' }}
-        >
-          Start New Assessment →
-        </button>
+        {/* Action Buttons */}
+        <div style={{ display: 'flex', gap: '12px', marginBottom: '16px' }}>
+          <button
+            onClick={handleExport}
+            style={{
+              flex: 1, padding: '16px',
+              backgroundColor: '#f8fafc',
+              border: '2px solid #1e40af',
+              borderRadius: '12px',
+              fontSize: '16px', fontWeight: '600',
+              color: '#1e40af', cursor: 'pointer',
+              fontFamily: 'Inter, sans-serif',
+              transition: 'all 0.2s ease'
+            }}
+            onMouseOver={e => {
+              e.currentTarget.style.backgroundColor = '#eff6ff';
+            }}
+            onMouseOut={e => {
+              e.currentTarget.style.backgroundColor = '#f8fafc';
+            }}
+          >
+            📥 Download PDF
+          </button>
+          <button
+            className="btn-primary"
+            onClick={() => goTo('landing')}
+            style={{ flex: 1, padding: '16px' }}
+          >
+            Start New Assessment →
+          </button>
+        </div>
 
       </div>
     </div>
