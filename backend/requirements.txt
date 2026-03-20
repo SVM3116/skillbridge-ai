@@ -1,0 +1,5 @@
+fastapi
+uvicorn
+pdfplumber
+google-genai
+python-dotenv
