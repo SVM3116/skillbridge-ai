@@ -7,6 +7,7 @@ import json
 import os
 import tempfile
 from dotenv import load_dotenv
+from test_engine import filter_testable_skills, generate_questions_for_skill, score_test
 
 load_dotenv()
 
@@ -101,3 +102,48 @@ async def parse_jd(data: dict):
 
     result = ask_gemini(prompt)
     return result
+
+@app.post("/api/generate-questions")
+async def generate_questions(data: dict):
+    """
+    Input:  { "resume_skills": [...], "jd_skills": [...] }
+    Output: { "testable_skills": [...], "questions": [...] }
+    """
+    resume_skills = data.get("resume_skills", [])
+    jd_skills     = data.get("jd_skills", [])
+
+    # Step 1: Filter — only test JD-relevant skills
+    testable_skills = filter_testable_skills(resume_skills, jd_skills)
+
+    if not testable_skills:
+        return {
+            "testable_skills": [],
+            "questions": [],
+            "message": "No overlapping skills found to test"
+        }
+
+    # Step 2: Generate questions for each skill
+    all_questions = []
+    for skill in testable_skills:
+        skill_questions = generate_questions_for_skill(skill)
+        all_questions.append(skill_questions)
+
+    return {
+        "testable_skills": testable_skills,
+        "questions": all_questions,
+        "total_questions": len(testable_skills) * 3
+    }
+
+
+@app.post("/api/score-test")
+async def score_test_endpoint(data: dict):
+    """
+    Input:  { "answers": [
+                {"skill": "Python", "question_id": "q1",
+                 "selected": "B", "correct": "B"}
+             ]}
+    Output: { "scores": [...] }
+    """
+    answers = data.get("answers", [])
+    scores  = score_test(answers)
+    return {"scores": scores}
