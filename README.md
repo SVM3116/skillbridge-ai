@@ -130,7 +130,7 @@ Frontend runs at: `http://localhost:3000`
 
 ---
 
-### Docker Setup (Recommended for Judges)
+### Docker Setup
 
 ```bash
 # Build and run everything
@@ -266,12 +266,10 @@ See `.env.example` for the template.
 
 ---
 
-## Team
+## Team - One Rupee
 
 Built for ARTPARK CodeForge Hackathon 2026.
 
 ---
 
-## License
 
-MIT
