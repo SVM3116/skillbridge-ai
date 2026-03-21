@@ -328,5 +328,159 @@
     "domain": "Soft Skills",
     "role_tags": ["HR Manager", "Team Lead", "Product Owner", "Backend Engineer"],
     "description": "Email writing, presentation skills, meeting facilitation, stakeholder communication"
+  },
+  {
+    "id": "C031",
+    "title": "TypeScript Fundamentals",
+    "skill": "TypeScript",
+    "level": "Beginner",
+    "duration_hours": 8,
+    "prerequisites": ["JavaScript ES6 Fundamentals"],
+    "domain": "Software Engineering",
+    "role_tags": ["Frontend Engineer", "Full Stack Engineer", "Backend Engineer"],
+    "description": "Types, interfaces, generics, decorators, strict mode configuration"
+  },
+  {
+    "id": "C032",
+    "title": "Microservices Architecture",
+    "skill": "Microservices",
+    "level": "Intermediate",
+    "duration_hours": 10,
+    "prerequisites": ["System Design Fundamentals"],
+    "domain": "Software Engineering",
+    "role_tags": ["Backend Engineer", "Architect", "DevOps Engineer"],
+    "description": "Service decomposition, API gateway, service mesh, inter-service communication"
+  },
+  {
+    "id": "C033",
+    "title": "Deep Learning Basics",
+    "skill": "Deep Learning",
+    "level": "Intermediate",
+    "duration_hours": 14,
+    "prerequisites": ["Machine Learning Fundamentals"],
+    "domain": "Data",
+    "role_tags": ["ML Engineer", "Data Scientist"],
+    "description": "Neural networks, CNNs, RNNs, backpropagation, TensorFlow/PyTorch basics"
+  },
+  {
+    "id": "C034",
+    "title": "AWS Solutions Architect",
+    "skill": "AWS",
+    "level": "Advanced",
+    "duration_hours": 16,
+    "prerequisites": ["AWS Cloud Fundamentals"],
+    "domain": "DevOps",
+    "role_tags": ["Cloud Engineer", "DevOps Engineer", "Architect"],
+    "description": "High availability, disaster recovery, cost optimization, well-architected framework"
+  },
+  {
+    "id": "C035",
+    "title": "GraphQL APIs",
+    "skill": "GraphQL",
+    "level": "Intermediate",
+    "duration_hours": 8,
+    "prerequisites": ["REST APIs"],
+    "domain": "Software Engineering",
+    "role_tags": ["Backend Engineer", "Full Stack Engineer"],
+    "description": "Schema design, resolvers, mutations, subscriptions, Apollo Server"
+  },
+  {
+    "id": "C036",
+    "title": "Cybersecurity Fundamentals",
+    "skill": "Cybersecurity",
+    "level": "Beginner",
+    "duration_hours": 8,
+    "prerequisites": [],
+    "domain": "DevOps",
+    "role_tags": ["DevOps Engineer", "Backend Engineer", "Security Engineer"],
+    "description": "OWASP Top 10, authentication, encryption, penetration testing basics"
+  },
+  {
+    "id": "C037",
+    "title": "HR Analytics",
+    "skill": "HR Analytics",
+    "level": "Intermediate",
+    "duration_hours": 8,
+    "prerequisites": [],
+    "domain": "HR",
+    "role_tags": ["HR Manager", "People Analytics"],
+    "description": "Workforce data, attrition analysis, engagement metrics, HRIS reporting"
+  },
+  {
+    "id": "C038",
+    "title": "Quality Control",
+    "skill": "Quality Control",
+    "level": "Beginner",
+    "duration_hours": 6,
+    "prerequisites": [],
+    "domain": "Operations",
+    "role_tags": ["Warehouse Operator", "Quality Manager", "Operations Manager"],
+    "description": "ISO standards, defect tracking, root cause analysis, Six Sigma basics"
+  },
+  {
+    "id": "C039",
+    "title": "Project Management Basics",
+    "skill": "Project Management",
+    "level": "Beginner",
+    "duration_hours": 8,
+    "prerequisites": [],
+    "domain": "Soft Skills",
+    "role_tags": ["Team Lead", "Product Owner", "Project Manager"],
+    "description": "Scope, schedule, budget, risk management, stakeholder communication"
+  },
+  {
+    "id": "C040",
+    "title": "Terraform Infrastructure as Code",
+    "skill": "Terraform",
+    "level": "Intermediate",
+    "duration_hours": 10,
+    "prerequisites": ["AWS Cloud Fundamentals"],
+    "domain": "DevOps",
+    "role_tags": ["DevOps Engineer", "Cloud Engineer"],
+    "description": "HCL syntax, providers, state management, modules, CI/CD integration"
+  },
+  {
+    "id": "C041",
+    "title": "Pandas and NumPy",
+    "skill": "Pandas",
+    "level": "Intermediate",
+    "duration_hours": 8,
+    "prerequisites": ["Python Intermediate Patterns"],
+    "domain": "Data",
+    "role_tags": ["Data Analyst", "ML Engineer", "Data Scientist"],
+    "description": "DataFrame operations, data cleaning, aggregation, merging, NumPy arrays"
+  },
+  {
+    "id": "C042",
+    "title": "MongoDB and NoSQL",
+    "skill": "MongoDB",
+    "level": "Beginner",
+    "duration_hours": 6,
+    "prerequisites": [],
+    "domain": "Software Engineering",
+    "role_tags": ["Backend Engineer", "Full Stack Engineer"],
+    "description": "Document model, CRUD operations, aggregation pipeline, indexing"
+  },
+  {
+    "id": "C043",
+    "title": "Onboarding Design and LMS",
+    "skill": "Onboarding Design",
+    "level": "Intermediate",
+    "duration_hours": 6,
+    "prerequisites": [],
+    "domain": "HR",
+    "role_tags": ["HR Manager", "L&D Manager", "Training Coordinator"],
+    "description": "Onboarding frameworks, LMS platforms, curriculum design, feedback collection"
+  },
+  {
+    "id": "C044",
+    "title": "Forklift and Material Handling",
+    "skill": "Forklift Operation",
+    "level": "Beginner",
+    "duration_hours": 4,
+    "prerequisites": ["Warehouse Safety Protocols"],
+    "domain": "Operations",
+    "role_tags": ["Warehouse Operator", "Logistics Manager"],
+    "description": "Forklift certification, load capacity, safety checks, warehouse navigation"
   }
 ]

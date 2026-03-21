@@ -7,8 +7,13 @@
   "Python Intermediate Patterns": ["Python"],
   "Python Advanced Mastery": ["Python"],
   "Machine Learning": ["Python"],
+  "Machine Learning Fundamentals": ["Python"],
+  "Deep Learning": ["Machine Learning Fundamentals"],
   "SQL Advanced Queries": ["SQL"],
   "System Design Advanced": ["System Design"],
   "CI/CD": ["Git"],
-  "AWS": ["AWS"]
+  "AWS Solutions Architect": ["AWS Cloud Fundamentals"],
+  "GraphQL": ["REST APIs"],
+  "React Advanced": ["React Basics"],
+  "Data Visualization": ["SQL"]
 }

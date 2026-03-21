@@ -1,174 +1,183 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const STEPS = ['Upload', 'Skills', 'Test', 'Roadmap'];
+const STEPS = ['Upload', 'Skills', 'Diagnostic', 'Roadmap'];
 
 function Upload({ goTo }) {
-  const [resumeFile, setResumeFile]   = useState(null);
-  const [jdText, setJdText]           = useState('');
-  const [loading, setLoading]         = useState(false);
-  const [error, setError]             = useState('');
+  const [resumeFile, setResumeFile] = useState(null);
+  const [jdText, setJdText]         = useState('');
+  const [loading, setLoading]       = useState(false);
+  const [error, setError]           = useState('');
 
   const handleSubmit = async () => {
     if (!resumeFile) { setError('Please upload your resume PDF'); return; }
     if (!jdText.trim()) { setError('Please paste the job description'); return; }
     setError('');
     setLoading(true);
-
     try {
       const formData = new FormData();
       formData.append('file', resumeFile);
       const resumeRes = await axios.post('http://localhost:8000/api/parse-resume', formData);
-
-      const jdRes = await axios.post('http://localhost:8000/api/parse-jd', { jd_text: jdText });
-
+      const jdRes     = await axios.post('http://localhost:8000/api/parse-jd', { jd_text: jdText });
       goTo('confirm', {
-        resumeSkills: resumeRes.data.skills,
-        jdSkills:     jdRes.data.required_skills,
+        resumeSkills:      resumeRes.data.skills,
+        jdSkills:          jdRes.data.required_skills,
         overallConfidence: resumeRes.data.overall_confidence,
       });
     } catch (err) {
       setError('Something went wrong. Please try again.');
-      console.error(err);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#f8fafc', fontFamily: 'Inter, sans-serif' }}>
+    <div className="bg-slate-50 min-h-screen text-slate-900">
+      <header className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl shadow-sm">
+        <div className="flex justify-between items-center h-16 px-6 md:px-12">
+          <div className="text-xl font-bold tracking-tight text-blue-900">SkillBridge AI</div>
+          <nav className="hidden md:flex space-x-8">
+            {['Product','Solutions','Pricing','Resources'].map(n => (
+              <span key={n} className="text-slate-600 font-medium hover:text-blue-800 transition-colors cursor-pointer">{n}</span>
+            ))}
+          </nav>
+          <button onClick={() => goTo('landing')} className="bg-blue-900 text-white px-5 py-2 rounded-lg font-semibold hover:opacity-90 transition-opacity">
+            Back
+          </button>
+        </div>
+      </header>
 
-      {/* Step Progress */}
-      <div style={{ backgroundColor: 'white', borderBottom: '1px solid #e2e8f0', padding: '16px 0' }}>
-        <div style={{ maxWidth: '600px', margin: '0 auto', display: 'flex', justifyContent: 'center', gap: '8px' }}>
-          {STEPS.map((step, i) => (
-            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <div style={{
-                width: '28px', height: '28px', borderRadius: '50%',
-                backgroundColor: i === 0 ? '#1e40af' : '#e2e8f0',
-                color: i === 0 ? 'white' : '#94a3b8',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: '13px', fontWeight: '600'
-              }}>{i + 1}</div>
-              <span style={{ fontSize: '13px', color: i === 0 ? '#1e40af' : '#94a3b8', fontWeight: i === 0 ? '600' : '400' }}>{step}</span>
-              {i < STEPS.length - 1 && <div style={{ width: '40px', height: '2px', backgroundColor: '#e2e8f0' }} />}
+      <main className="pt-24 pb-12 min-h-screen">
+        <div className="max-w-3xl mx-auto px-6">
+
+          {/* Step Progress */}
+          <div className="mb-12">
+            <div className="flex items-center justify-between mb-4">
+              {STEPS.map((step, i) => (
+                <React.Fragment key={i}>
+                  <div className="flex flex-col items-center">
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold mb-2 transition-all"
+                      style={{backgroundColor: i===0 ? '#00288e' : '#e3e2e3', color: i===0 ? 'white' : '#444653'}}>
+                      {i===0
+                        ? <span className="material-symbols-outlined text-sm" style={{fontVariationSettings:"'FILL' 1"}}>upload_file</span>
+                        : i===1
+                        ? <span className="material-symbols-outlined text-sm">psychology</span>
+                        : i===2
+                        ? <span className="material-symbols-outlined text-sm">quiz</span>
+                        : <span className="material-symbols-outlined text-sm">map</span>
+                      }
+                    </div>
+                    <span className="mono text-xs uppercase tracking-wider" style={{color: i===0 ? '#00288e' : '#757684'}}>{step}</span>
+                  </div>
+                  {i < STEPS.length-1 && (
+                    <div className="flex-1 h-0.5 mx-4 mb-6" style={{backgroundColor:'#e3e2e3'}}></div>
+                  )}
+                </React.Fragment>
+              ))}
             </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Main Content */}
-      <div style={{ maxWidth: '600px', margin: '0 auto', padding: '48px 24px' }}>
-        <h2 style={{ fontSize: '32px', fontWeight: '700', color: '#1e293b', marginBottom: '8px' }}>
-          Let's get started
-        </h2>
-        <p style={{ color: '#64748b', marginBottom: '40px', fontSize: '16px' }}>
-          Upload your resume and paste the job description below.
-        </p>
-
-        {/* Resume Upload */}
-        <div style={{ marginBottom: '28px' }}>
-          <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', color: '#374151', marginBottom: '8px' }}>
-            Resume (PDF)
-          </label>
-          <div
-            onClick={() => document.getElementById('resumeInput').click()}
-            style={{
-              border: `2px dashed ${resumeFile ? '#1e40af' : '#cbd5e1'}`,
-              borderRadius: '12px',
-              padding: '32px',
-              textAlign: 'center',
-              cursor: 'pointer',
-              backgroundColor: resumeFile ? '#eff6ff' : 'white',
-              transition: 'all 0.2s'
-            }}
-          >
-            <div style={{ fontSize: '32px', marginBottom: '8px' }}>📄</div>
-            <p style={{ color: resumeFile ? '#1e40af' : '#94a3b8', fontSize: '15px', fontWeight: '500' }}>
-              {resumeFile ? `✅ ${resumeFile.name}` : 'Click to upload your resume PDF'}
-            </p>
-            <p style={{ color: '#cbd5e1', fontSize: '13px', marginTop: '4px' }}>PDF files only</p>
           </div>
-          <input
-            id="resumeInput"
-            type="file"
-            accept=".pdf"
-            style={{ display: 'none' }}
-            onChange={e => setResumeFile(e.target.files[0])}
-          />
-        </div>
 
-        {/* JD Text Area */}
-        <div style={{ marginBottom: '28px' }}>
-          <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', color: '#374151', marginBottom: '8px' }}>
-            Job Description
-          </label>
-          <textarea
-            value={jdText}
-            onChange={e => setJdText(e.target.value)}
-            placeholder="Paste the job description here..."
-            rows={8}
-            style={{
-              width: '100%',
-              padding: '16px',
-              borderRadius: '12px',
-              border: '1.5px solid #e2e8f0',
-              fontSize: '15px',
-              color: '#374151',
-              resize: 'vertical',
-              outline: 'none',
-              fontFamily: 'Inter, sans-serif',
-              boxSizing: 'border-box',
-              transition: 'border 0.2s'
-            }}
-            onFocus={e => e.target.style.border = '1.5px solid #1e40af'}
-            onBlur={e => e.target.style.border = '1.5px solid #e2e8f0'}
-          />
-        </div>
+          {/* Card */}
+          <div className="bg-white rounded-xl shadow-sm p-8 md:p-12">
+            <div className="mb-8">
+              <h1 className="text-3xl font-bold text-blue-900 tracking-tight mb-2">Let's get started</h1>
+              <p className="text-slate-500">We'll analyze your professional profile to build a custom bridge to your next career milestone.</p>
+            </div>
 
-        {/* Error */}
-        {error && (
-          <div style={{
-            backgroundColor: '#fef2f2', border: '1px solid #fecaca',
-            borderRadius: '8px', padding: '12px 16px',
-            color: '#dc2626', fontSize: '14px', marginBottom: '20px'
-          }}>
-            {error}
+            <div className="space-y-8">
+              {/* Upload Zone */}
+              <div>
+                <div
+                  onClick={() => document.getElementById('resumeInput').click()}
+                  className="group relative flex flex-col items-center justify-center w-full h-64 rounded-xl cursor-pointer overflow-hidden transition-colors"
+                  style={{
+                    border: `2px dashed ${resumeFile ? '#00288e' : 'rgba(0,40,142,0.3)'}`,
+                    backgroundColor: resumeFile ? 'rgba(221,225,255,0.3)' : '#f5f3f4'
+                  }}
+                  onMouseOver={e => e.currentTarget.style.backgroundColor='rgba(221,225,255,0.2)'}
+                  onMouseOut={e => e.currentTarget.style.backgroundColor= resumeFile ? 'rgba(221,225,255,0.3)' : '#f5f3f4'}
+                >
+                  <div className="flex flex-col items-center justify-center">
+                    <div className="mb-4 p-4 rounded-full" style={{backgroundColor:'rgba(221,225,255,0.5)', color:'#00288e'}}>
+                      <span className="material-symbols-outlined" style={{fontSize:'40px'}}>cloud_upload</span>
+                    </div>
+                    <p className="mb-2 text-sm text-slate-700">
+                      {resumeFile
+                        ? <span className="font-semibold text-blue-900">✅ {resumeFile.name}</span>
+                        : <><span className="font-semibold">Drag &amp; drop your resume</span> or click to browse</>
+                      }
+                    </p>
+                    <p className="mono text-xs text-slate-400 uppercase">PDF, DOCX up to 10MB</p>
+                  </div>
+                  <input id="resumeInput" type="file" accept=".pdf" className="hidden"
+                    onChange={e => setResumeFile(e.target.files[0])} />
+                </div>
+              </div>
+
+              {/* JD Textarea */}
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <label className="mono text-xs uppercase tracking-wider text-slate-600">Target Job Description</label>
+                  <span className="mono text-xs px-2 py-0.5 rounded" style={{color:'#00288e', backgroundColor:'#dde1ff'}}>Required</span>
+                </div>
+                <textarea
+                  value={jdText}
+                  onChange={e => setJdText(e.target.value)}
+                  placeholder="Paste job description here..."
+                  rows={8}
+                  className="w-full px-6 py-4 rounded-xl resize-none outline-none transition-all"
+                  style={{
+                    backgroundColor:'white',
+                    border:'1px solid #c4c5d5',
+                    fontFamily:'Inter, sans-serif',
+                    fontSize:'15px',
+                    color:'#1b1c1d'
+                  }}
+                  onFocus={e => { e.target.style.borderColor='#00288e'; e.target.style.boxShadow='0 0 0 4px rgba(221,225,255,0.5)'; }}
+                  onBlur={e => { e.target.style.borderColor='#c4c5d5'; e.target.style.boxShadow='none'; }}
+                />
+              </div>
+
+              {error && (
+                <div className="px-4 py-3 rounded-lg text-sm" style={{backgroundColor:'#ffdad6', color:'#ba1a1a'}}>
+                  {error}
+                </div>
+              )}
+
+              {/* Submit */}
+              <button
+                onClick={handleSubmit}
+                disabled={loading}
+                className="w-full py-5 rounded-xl font-bold text-lg flex items-center justify-center group transition-all active:scale-95"
+                style={{backgroundColor: loading ? '#757684' : '#00288e', color:'white'}}
+                onMouseOver={e => { if(!loading) e.currentTarget.style.boxShadow='0 12px 40px rgba(0,40,142,0.2)'; }}
+                onMouseOut={e => e.currentTarget.style.boxShadow='none'}
+              >
+                {loading ? 'Analyzing...' : 'Analyze My Profile'}
+                {!loading && <span className="material-symbols-outlined ml-2 group-hover:translate-x-1 transition-transform">arrow_forward</span>}
+              </button>
+            </div>
+
+            <div className="mt-8 flex items-center justify-center space-x-2">
+              <div className="px-3 py-1 rounded-full flex items-center" style={{backgroundColor:'#ecdcff', color:'#5e0dba'}}>
+                <span className="mono text-xs uppercase">AI processing active</span>
+                <div className="ml-2 w-2 h-2 rounded-full animate-pulse" style={{backgroundColor:'#7433d1'}}></div>
+              </div>
+            </div>
           </div>
-        )}
+        </div>
+      </main>
 
-        {/* Submit Button */}
-        <button
-          onClick={handleSubmit}
-          disabled={loading}
-          style={{
-            width: '100%',
-            backgroundColor: loading ? '#94a3b8' : '#1e40af',
-            color: 'white',
-            padding: '16px',
-            borderRadius: '12px',
-            fontSize: '16px',
-            fontWeight: '600',
-            border: 'none',
-            cursor: loading ? 'not-allowed' : 'pointer',
-            transition: 'all 0.2s'
-          }}
-        >
-          {loading ? '⏳ Analyzing your profile...' : 'Analyze My Profile →'}
-        </button>
-
-        <button
-          onClick={() => goTo('landing')}
-          style={{
-            width: '100%', marginTop: '12px',
-            backgroundColor: 'transparent', color: '#64748b',
-            padding: '12px', border: 'none',
-            cursor: 'pointer', fontSize: '14px'
-          }}
-        >
-          ← Back
-        </button>
-      </div>
+      <footer className="w-full border-t border-slate-200 bg-slate-50">
+        <div className="max-w-7xl mx-auto py-12 px-6 flex justify-between items-center">
+          <span className="mono text-xs text-slate-500">© 2024 SkillBridge AI. Precision Onboarding.</span>
+          <div className="flex space-x-8">
+            {['Privacy','Terms','Security','Status'].map(l => (
+              <span key={l} className="mono text-xs text-slate-500 cursor-pointer hover:text-slate-800">{l}</span>
+            ))}
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
